@@ -25,7 +25,7 @@ app = FastAPI()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -39,7 +39,6 @@ def generateResponse(collection, prompt_template: str, text: str):
         prompt=prompt
     )
     generated_text = response['response']
-
     return TextResponse(result=generated_text)
 
 
@@ -53,7 +52,6 @@ def summarize(request: TextRequest):
 
 @app.post("/expand", response_model=TextResponse)
 def expand(request: TextRequest):
-    
     return generateResponse(
         documents,
         "Please expand the following text with examples: \n\n{text}",
