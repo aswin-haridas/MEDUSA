@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-pydantic
-ollama
-chromadb
-scikit-learn

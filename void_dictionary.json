@@ -1,0 +1,25 @@
+{
+  "hey": {
+    "definition": "Its a greeting",
+    "question_asked": "Legacy entry",
+    "user_id": 1433390895,
+    "user_name": "Nova",
+    "timestamp": "2025-07-07T02:02:43.765468",
+    "context": "hey kavya",
+    "confidence": "legacy",
+    "usage_count": 2
+  },
+  "yeah": "Approving somethin",
+  "did": "Ys",
+  "no": "It means negative",
+  "hi": {
+    "definition": "Chillin",
+    "question_asked": "Hey! What’s going on today? 😊",
+    "user_id": 1433390895,
+    "user_name": "Nova",
+    "timestamp": "2025-07-07T01:59:30.755028",
+    "context": "chillin",
+    "confidence": "user_defined",
+    "usage_count": 1
+  }
+}
