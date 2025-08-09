@@ -1,0 +1,11 @@
+# Add your Python dependencies below, one per line.
+# Example:
+# numpy
+# pandas
+fastapi
+uvicorn
+pydantic
+chromadb
+ollama
+SpeechRecognition
+pyttsx3
