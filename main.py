@@ -3,6 +3,7 @@ import chromadb
 import ollama
 import uvicorn
 from fastapi import FastAPI, Response
+from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -29,6 +30,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# WebSocket endpoint
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_text()
+            print(f"Received via WebSocket: {data}")
+            generate_response(data)
+    except Exception as e:
+        print(f"WebSocket connection closed: {e}")
+
 def generate_response(collection, prompt_template: str, text: str):
     # Generate a new response
     prompt = prompt_template.format(text=text)
@@ -37,33 +50,7 @@ def generate_response(collection, prompt_template: str, text: str):
         prompt=prompt
     )
     generated_text = response['response']
-    return TextResponse(result=generated_text)
-
-
-@app.post("/summarize", response_model=TextResponse)
-def summarize(request: TextRequest):
-    return generate_response(
-        documents,
-        "Please summarize the following text: \n\n{text}. try to  return a 1-liner",
-        request.text
-    )
-
-@app.post("/expand", response_model=TextResponse)
-def expand(request: TextRequest):
-    return generate_response(
-        documents,
-        "Please expand the following text with examples: \n\n{text}",
-        request.text
-    )
-
-
-@app.post("/shorten", response_model=TextResponse)
-def shorten(request: TextRequest):
-    return generate_response(
-        documents,
-        "Please shorten the following text: \n\n{text}. It should compress to a tweet-length.",
-        request.text
-    )
+    return TextResponse(result=generated_text)  
 
 @app.post("/thoughts", response_model=TextResponse)
 def thoughts(request: TextRequest):
@@ -72,7 +59,6 @@ def thoughts(request: TextRequest):
         "Generate exactly 4 relevant search queries based on the following text:\n\n{text}\n\nEach query should be a clear, concise sentence, separated by a comma dont give any other text.",
         request.text
     )
-
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
